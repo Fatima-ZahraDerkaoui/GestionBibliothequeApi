@@ -10,6 +10,7 @@ use App\Http\Resources\UserCollection ;
 use App\Http\Resources\LoginRessource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class UserController extends Controller

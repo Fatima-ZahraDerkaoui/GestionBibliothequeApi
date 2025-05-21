@@ -2,13 +2,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\Api\BookController;
-use App\Http\Controllers\Api\BorrowingController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PurchaseController;
+use App\Http\Controllers\Api\BookPreviewController;
+use App\Http\Controllers\Api\NotificationController;
 
 Route::get('/hello', function () {
     return response()->json(['message' => 'WELCOME TO THE API']);
@@ -22,12 +21,23 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
-    // Resources
+    // Users & Books
     Route::apiResource('users', UserController::class);
     Route::apiResource('books', BookController::class);
 
-    // Borrowings
-    Route::get('borrowings', [BorrowingController::class, 'index']);
-    Route::post('borrowings', [BorrowingController::class, 'store']);
-    Route::put('borrowings/return/{id}', [BorrowingController::class, 'returnBook']);
+    // Purchases (achats de livres)
+    Route::get('purchases', [PurchaseController::class, 'index']);
+    Route::post('purchases', [PurchaseController::class, 'store']);
+    Route::get('purchases/{id}', [PurchaseController::class, 'show']);
+    Route::put('purchases/{id}', [PurchaseController::class, 'update']);
+    Route::delete('purchases/{id}', [PurchaseController::class, 'destroy']);
+
+    // Book previews
+    Route::get('book-previews', [BookPreviewController::class, 'index']);
+    Route::post('book-previews', [BookPreviewController::class, 'store']);
+
+    // Notifications
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::put('notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::delete('notifications/{id}', [NotificationController::class, 'destroy']);
 });
